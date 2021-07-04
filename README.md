@@ -13,19 +13,19 @@ U
 
 To build:
 
-```
+```shell
 $ docker build -t JuniorJPDJ/docker-usermode-linux .
 ```
 
 To run:
 
-```
-$ docker run --name uml -p 2222:2222 --rm -ti JuniorJPDJ/docker-usermode-linux
+```shell
+$ docker run -p 2222:2222 --rm JuniorJPDJ/docker-usermode-linux
 ```
 
 You can then ssh to it:
 
-```
+```shell
 $ ssh root@127.0.0.1 -p 2222
 ```
 Default root password is `voidlinux`.

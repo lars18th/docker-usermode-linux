@@ -58,5 +58,4 @@ COPY runlinux.sh /runlinux.sh
 
 EXPOSE 2222
 
-ENTRYPOINT [ "/tini-static" ]
-CMD [ "/runlinux.sh" ]
+ENTRYPOINT [ "/tini-static", "/runlinux.sh", "--" ]
