@@ -1,3 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 
-exec slirp-fullbolt "redir 2222 22" "$@"
+args=( "$@" )
+
+for port in ${PORTS[@]} ; do
+	args+=("redir $port $port")
+done
+
+exec slirp-fullbolt "${args[@]}"

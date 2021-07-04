@@ -56,6 +56,8 @@ COPY --from=linux /linux /linux
 COPY slirp.sh /slirp.sh
 COPY runlinux.sh /runlinux.sh
 
-EXPOSE 2222
+EXPOSE 22
+
+ENV PORTS 22
 
 ENTRYPOINT [ "/tini-static", "/runlinux.sh", "--" ]
