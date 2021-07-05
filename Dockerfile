@@ -44,10 +44,11 @@ RUN set -x \
     'ip address add 10.0.2.15/24 dev eth0' \
     'ip route add default via 10.0.2.2' >> /rootfs/etc/rc.local \
   && cp /etc/resolv.conf /rootfs/etc/resolv.conf \
-  && chroot /rootfs xbps-install -Sy haveged targetcli-fb cdemu-client dbus-x11 \
+  && chroot /rootfs xbps-install -Sy haveged targetcli-fb cdemu-client dbus dbus-x11 \
   && echo "nameserver 10.0.2.3" > /rootfs/etc/resolv.conf \
   && bash -c 'touch /rootfs/etc/sv/agetty-tty{1,2,3,4,5,6}/down' \
   && ln -s /etc/sv/sshd /rootfs/etc/runit/runsvdir/default/ \
+  && ln -s /etc/sv/dbus /rootfs/etc/runit/runsvdir/default/ \
   && ln -s /etc/sv/haveged /rootfs/etc/runit/runsvdir/default/
 
 
