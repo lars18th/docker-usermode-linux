@@ -1,4 +1,4 @@
-FROM debian:testing-slim AS linux
+FROM debian:10-slim AS linux
 
 COPY uml.config /uml.config
 
@@ -21,7 +21,7 @@ RUN set -x \
   && rm -rf /var/lib/apt/lists/*
 
 
-FROM debian:testing-slim
+FROM debian:10-slim
 
 # Add tini
 ADD https://github.com/krallin/tini/releases/download/v0.19.0/tini-static /
@@ -33,7 +33,7 @@ RUN chmod +x /tini-static \
   && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir /rootfs \
-  && wget -O - 'https://alpha.de.repo.voidlinux.org/live/20210316/void-x86_64-musl-ROOTFS-20210316.tar.xz' | tar xJ -C /rootfs
+  && wget -O - 'https://alpha.de.repo.voidlinux.org/live/20221001/void-x86_64-musl-ROOTFS-20221001.tar.xz' | tar xJ -C /rootfs
 
 RUN set -x \
   && printf '%s\n' 'ignorepkg=vhba-module-dkms' > /rootfs/etc/xbps.d/vhba.conf \
@@ -44,6 +44,7 @@ RUN set -x \
     'ip address add 10.0.2.15/24 dev eth0' \
     'ip route add default via 10.0.2.2' >> /rootfs/etc/rc.local \
   && cp /etc/resolv.conf /rootfs/etc/resolv.conf \
+  && chroot /rootfs xbps-install -Syu xbps \
   && chroot /rootfs xbps-install -Sy haveged targetcli-fb cdemu-client dbus dbus-x11 \
   && echo "nameserver 10.0.2.3" > /rootfs/etc/resolv.conf \
   && bash -c 'touch /rootfs/etc/sv/agetty-tty{1,2,3,4,5,6}/down' \
