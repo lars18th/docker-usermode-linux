@@ -2,18 +2,26 @@ FROM debian:testing-slim AS linux
 
 COPY uml.config /uml.config
 
-ENV LINUX_VERSION linux-5.10.47
-ENV LINUX_DOWNLOAD_URL https://cdn.kernel.org/pub/linux/kernel/v5.x/${LINUX_VERSION}.tar.xz
+ENV LINUX_VERSION linux-6.3.8
+ENV LINUX_DOWNLOAD_URL https://cdn.kernel.org/pub/linux/kernel/v6.x/${LINUX_VERSION}.tar.xz
 
 RUN set -x \
   && apt-get update \
-  && apt-get -y install build-essential flex bison xz-utils wget ca-certificates bc \
+  && apt-get -y install build-essential flex bison xz-utils wget ca-certificates bc
+
+# Install LLVM v.15 packages
+RUN set -x \
+  && apt-get -y install lsb-release wget software-properties-common gnupg2 \
+  && wget https://apt.llvm.org/llvm.sh \
+  && chmod +x llvm.sh \
+  && ./llvm.sh 15 all
+
+RUN set -x \
   && wget -O - ${LINUX_DOWNLOAD_URL} | tar -xJ \
   && cd ${LINUX_VERSION} \
-  && wget -O - 'https://github.com/zen-kernel/zen-kernel/commit/19c6683e94816fbaef422c446a8ff3d54c973cf3.diff' | patch -p1 \
   && cp /uml.config .config \
-  && make ARCH=um olddefconfig \
-  && make ARCH=um -j $(($(nproc)+1)) \
+  && make LLVM=-15 ARCH=um olddefconfig \
+  && make LLVM=-15 ARCH=um -j $(($(nproc)+1)) \
   && mv ./linux / \
   && cd .. \
   && rm -rf ${LINUX_VERSION} \
