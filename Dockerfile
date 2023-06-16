@@ -1,4 +1,4 @@
-FROM debian:10-slim AS linux
+FROM debian:testing-slim AS linux
 
 COPY uml.config /uml.config
 
@@ -21,7 +21,7 @@ RUN set -x \
   && rm -rf /var/lib/apt/lists/*
 
 
-FROM debian:10-slim
+FROM debian:testing-slim
 
 # Add tini
 ADD https://github.com/krallin/tini/releases/download/v0.19.0/tini-static /
