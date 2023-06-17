@@ -1,3 +1,5 @@
+## This is a fork of https://github.com/JuniorJPDJ/docker-usermode-linux
+
 # docker-usermode-linux
 
 A proof of concept [user mode linux](https://en.wikipedia.org/wiki/User-mode_Linux)
@@ -10,10 +12,17 @@ Linux process. The root inside this user mode Linux kernel has significanly more
 power than root outside of the kernel, but it cannot affect the host kernel.
 
 
-To build:
+To build: (_optional_)
 
 ```shell
 $ docker build -t juniorjpdj/docker-usermode-linux .
+```
+
+To download:
+
+```shell
+$ wget https://github.com/lars18th/docker-usermode-linux/releases/download/v1.0/juniorjpdj_docker-usermode-linux.tgz
+$ gunzip -c juniorjpdj_docker-usermode-linux.tgz | docker load
 ```
 
 To run:
